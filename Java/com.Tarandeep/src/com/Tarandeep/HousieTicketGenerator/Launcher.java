@@ -5,7 +5,7 @@ public class Launcher {
 	public static void main(String[] args) {
 		
 		//
-		Ticket t = Ticket.createTicket(3, 10);
+		Ticket t = Ticket.createTicket(3, 9);
 		
 		new TicketView(t);
 		
