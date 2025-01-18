@@ -1,0 +1,8 @@
+package tasktracker.service;
+
+public class TaskManager {
+	public Integer createTask(){
+		Integer taskId=0;
+		return taskId;
+	}
+}

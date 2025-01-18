@@ -1,0 +1,15 @@
+package tasktracker.service;
+
+import tasktracker.model.Task;
+
+public class TaskManager {
+	public Integer createTask(Task task){
+		Integer taskId=0;
+		return taskId;
+	}
+	
+	public Integer getTask(){
+		Integer taskId=0;
+		return taskId;
+	}
+}
