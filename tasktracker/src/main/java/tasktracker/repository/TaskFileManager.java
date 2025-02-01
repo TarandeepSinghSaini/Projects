@@ -20,8 +20,8 @@ import tasktracker.model.Task;
 
 public class TaskFileManager {
 	static String fileName = "TaskFile";
-	static String filePath = "C:\\Users\\tsaini\\";
-	static String taskHistoryPath = filePath+"taskHistory\\";
+	static String filePath = "/taskFiles/";
+	static String taskHistoryPath = filePath+"taskHistory/";
 	static String fileExtension = ".json";
 	static File file;
 	
