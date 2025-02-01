@@ -97,8 +97,14 @@ public class TaskManager {
 		taskList = ReadTaskHandler.getTaskList();
 	}
 	
-	private static void getNewTaskId(List<Task> allTask) {
+	private static Integer getNewTaskId(List<Task> allTask) {
 		int maxTaskId = 0;
-				
+		for (Task task : allTask) {
+			if (task.getId() > maxTaskId) {
+				maxTaskId = task.getId();
+			}
+			
+		}		
+		return maxTaskId+1;
 	}
 }
