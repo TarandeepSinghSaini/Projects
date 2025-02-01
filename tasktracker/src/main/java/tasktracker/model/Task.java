@@ -3,17 +3,17 @@ package tasktracker.model;
 import java.util.Date;
 
 public class Task {
-	private String name;
+	private Integer id;
 	private String description;
-	private Date createDate;
-	private Date updateDate;
+	private Date createdAt;
+	private Date updatedAt;
 	private String status;
 	
-	public String getName() {
-		return name;
+	public Integer getId() {
+		return id;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getDescription() {
 		return description;
@@ -21,17 +21,17 @@ public class Task {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 	public String getStatus() {
 		return status;
@@ -39,5 +39,4 @@ public class Task {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
 }
