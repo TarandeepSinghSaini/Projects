@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import tasktracker.model.Task;
@@ -11,52 +12,93 @@ import tasktracker.model.TaskStatus;
 
 public class TaskManager {
 	static List<Task> taskList;
-	
-	public List<Task> getTaskByStatus(String taskStatus){
-		return getAllTasks().stream()
+
+	public List<Task> getTaskByStatus(String taskStatus) {
+		return getAllTasks()
+				.stream()
 				.filter(task -> task.getStatus().equalsIgnoreCase(taskStatus))
 				.collect(Collectors.toList());
-		
 	}
-	
-	public List<Task> getAllTasks(){
-		if(taskList == null) {
+
+	public List<Task> getAllTasks() {
+		if (taskList == null) {
 			taskList = ReadTaskHandler.getTaskList();
 		}
 		return taskList;
 	}
-	
-	public Integer createTask(String taskName){
-		List<Task> taskList =  getAllTasks();
-		Integer taskId = taskList.size()+1;
+
+	public Integer createTask(String taskName) {
+		Integer createdTaskId = null;
+		List<Task> taskList = getAllTasks();
+		Integer taskId = getNewTaskId(taskList);
 		Task newTask = new Task();
 		newTask.setId(taskId);
 		newTask.setDescription(taskName);
 		newTask.setCreatedAt(Date.from(Instant.now()));
 		newTask.setStatus(TaskStatus.TODO.toString());
 		taskList.add(newTask);
-		CreateTaskHandler.saveTasks(taskList);
-		return taskId;
+		if (CreateTaskHandler.saveTasks(taskList)) {
+			createdTaskId = taskId;
+			refreshTaskList();
+		}
+		return createdTaskId;
 	}
-	
-	public Task getTask(Integer taskId){
-		Task task = new Task();
-		return task;
-	}
-	
+
 	public Integer updateTaskName(Integer taskId, String taskName) {
-		return 0;
+		List<Task> taskList = getAllTasks();
+		Integer updatedTaskId = null;
+		for (Task task : taskList) {
+			if (task.getId() == taskId) {
+				task.setDescription(taskName);
+				task.setUpdatedAt(Date.from(Instant.now()));
+			}
+		}
+		if (CreateTaskHandler.saveTasks(taskList)) {
+			updatedTaskId = taskId;
+			refreshTaskList();
+		}
+		return updatedTaskId;
 	}
-	
+
 	public Integer updateTaskStatus(Integer taskId, String status) {
-		return 0;
+		List<Task> taskList = getAllTasks();
+		Integer updatedTaskId = null;
+		for (Task task : taskList) {
+			if (task.getId() == taskId) {
+				task.setStatus(status);
+				task.setUpdatedAt(Date.from(Instant.now()));
+			}
+		}
+		if (CreateTaskHandler.saveTasks(taskList)) {
+			updatedTaskId = taskId;
+			refreshTaskList();
+		}
+		return updatedTaskId;
 	}
-	
+
 	public Integer deleteTask(Integer taskId) {
-		return 0;
+		List<Task> taskList = getAllTasks();
+		List<Task> newTaskList = new ArrayList<>();
+		Integer deletedTaskId = null;
+		for (Task task : taskList) {
+			if (task.getId() == taskId) {
+				continue;
+			}
+			newTaskList.add(task);
+		}
+		if (CreateTaskHandler.saveTasks(newTaskList)) {
+			deletedTaskId = taskId;
+			refreshTaskList();
+		}
+		return deletedTaskId;
+	}
+
+	public static void refreshTaskList() {
+		taskList = ReadTaskHandler.getTaskList();
 	}
 	
-	public boolean storeTask(List<Task> taskList) {
-		return false;
+	private static void getNewTaskId(List<Task> allTask) {
+		int maxTaskId = 0;
+				
 	}
 }

@@ -16,17 +16,16 @@ public class Boot {
 		while(true) {
 			String userCommand = getUserInput();
 			String[] userCommands = userCommand.split(" ");
+			String menuItem = null;
+			if(userCommands == null || userCommands[0] == null) {
+				menuItem = "invalid";
+			}else {
+				menuItem = userCommands[0];
+			}
 			Integer taskId = null;
-			switch(userCommands[0]) {
+			switch(menuItem.toLowerCase()) {
 			case "add":
-				String description = userCommands[1].replace("\"", "");
-				for(int i=2;i<userCommands.length;i++) {
-					if(userCommands[i].endsWith("\"")){
-						description += " "+userCommands[i].replace("\"", "");
-					}else {
-						description += " "+userCommands[i];
-					}	
-				}
+				String description = extractDescription(userCommands,1,userCommands.length);
 				taskId = manager.createTask(description);
 				if(taskId == null) {
 					System.out.println("Task creation failed miserably");
@@ -35,7 +34,8 @@ public class Boot {
 				}
 			break;
 			case "update":
-				taskId = manager.updateTaskName(Integer.parseInt(userCommands[1]), userCommands[2]);
+				String updateDescription = extractDescription(userCommands,2,userCommands.length);
+				taskId = manager.updateTaskName(Integer.parseInt(userCommands[1]), updateDescription);
 				if(taskId == null) {
 					System.out.println("Task update failed miserably");
 				}else {
@@ -51,7 +51,7 @@ public class Boot {
 				}
 			break;
 			case "mark-in-progress":
-				taskId = manager.updateTaskStatus(Integer.parseInt(userCommands[1]), "mark-in-progress");
+				taskId = manager.updateTaskStatus(Integer.parseInt(userCommands[1]), "in-progress");
 				if(taskId == null) {
 					System.out.println("Task status not updated");
 				}else {
@@ -59,7 +59,7 @@ public class Boot {
 				}
 			break;
 			case "mark-done":
-				taskId = manager.updateTaskStatus(Integer.parseInt(userCommands[1]), "mark-done");
+				taskId = manager.updateTaskStatus(Integer.parseInt(userCommands[1]), "done");
 				if(taskId == null) {
 					System.out.println("Task status not updated");
 				}else {
@@ -94,7 +94,17 @@ public class Boot {
 		}
 
 	}
-	
+	private static String extractDescription(String[] userCommands,int startIndex, int endIndex) {
+		String description = userCommands[startIndex].replace("\"", "");
+		for(int i=startIndex+1 ;i<endIndex;i++) {
+			if(userCommands[i].endsWith("\"")){
+				description += " "+userCommands[i].replace("\"", "");
+			}else {
+				description += " "+userCommands[i];
+			}	
+		}
+		return description;
+	}
 	private static void help() {
 		System.out.println("# Adding a new task\r\n"
 				+ "add \"Buy groceries\"\r\n"

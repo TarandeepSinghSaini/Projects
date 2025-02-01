@@ -6,7 +6,7 @@ import tasktracker.model.Task;
 import tasktracker.repository.TaskFileManager;
 
 public class CreateTaskHandler {
-	public static void saveTasks(List<Task> taskList) {
-		TaskFileManager.updateTaskFile(taskList);
+	public static Boolean saveTasks(List<Task> taskList) {
+		return TaskFileManager.updateTaskFile(taskList);
 	}
 }

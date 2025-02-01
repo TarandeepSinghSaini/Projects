@@ -28,7 +28,8 @@ public class TaskFileManager {
 	public static List<Task> getAllTasks(){
 		String fileContent = TaskFileManager.getTaskFileContent();
 		FileParser parser = new JsonToTasksConvertor();
-		return (List<Task>)parser.stringToObject(fileContent);
+		List<Task> taskList = (List<Task>)parser.stringToObject(fileContent);
+		return taskList;
 	}
 	
 	public static String getTaskFileContent() {

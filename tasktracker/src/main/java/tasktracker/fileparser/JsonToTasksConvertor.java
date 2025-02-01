@@ -62,25 +62,30 @@ public class JsonToTasksConvertor implements JsonParser {
 	@Override
 	public String objectToString(Object object) {
 		List<Task> taskList = (List<Task>) object;
-		String content = "{\r\n" + "  \"tasks\": [\r\n";
+		String content = "";
 		int totalTasks = taskList.size();
-		for (int i = 0; i < totalTasks - 1; i++) {
+		if (totalTasks > 0) {
+			content = "{\r\n" + "  \"tasks\": [\r\n";
+
+			for (int i = 0; i < totalTasks - 1; i++) {
+				content += String.format(
+						"{\"id\": %d,\"description\": \"%s\",\"status\": \"%s\",\"createdAt\": \"%s\",\"updatedAt\": \"%s\"},",
+						taskList.get(i).getId(), taskList.get(i).getDescription(), taskList.get(i).getStatus(),
+						dateFormatter.format(taskList.get(i).getCreatedAt()),
+						taskList.get(i).getUpdatedAt() == null ? "NA"
+								: dateFormatter.format(taskList.get((i)).getUpdatedAt()));
+			}
+
 			content += String.format(
-					"{\"id\": %d,\"description\": \"%s\",\"status\": \"%s\",\"createdAt\": \"%s\",\"updatedAt\": \"%s\"},",
-					taskList.get(i).getId(), taskList.get(i).getDescription(), taskList.get(i).getStatus(),
-					dateFormatter.format(taskList.get(i).getCreatedAt()), taskList.get(i).getUpdatedAt() == null ? "NA"
-							: dateFormatter.format(taskList.get((i)).getUpdatedAt()));
+					"{\"id\": %d,\"description\": \"%s\",\"status\": \"%s\",\"createdAt\": \"%s\",\"updatedAt\": \"%s\"}",
+					taskList.get(totalTasks - 1).getId(), taskList.get(totalTasks - 1).getDescription(),
+					taskList.get(totalTasks - 1).getStatus(),
+					dateFormatter.format(taskList.get(totalTasks - 1).getCreatedAt()),
+					taskList.get(totalTasks - 1).getUpdatedAt() == null ? "NA"
+							: dateFormatter.format(taskList.get((totalTasks - 1)).getUpdatedAt()));
+
+			content += "]}";
 		}
-
-		content += String.format(
-				"{\"id\": %d,\"description\": \"%s\",\"status\": \"%s\",\"createdAt\": \"%s\",\"updatedAt\": \"%s\"}",
-				taskList.get(totalTasks - 1).getId(), taskList.get(totalTasks - 1).getDescription(),
-				taskList.get(totalTasks - 1).getStatus(),
-				dateFormatter.format(taskList.get(totalTasks - 1).getCreatedAt()),
-				taskList.get(totalTasks - 1).getUpdatedAt() == null ? "NA"
-						: dateFormatter.format(taskList.get((totalTasks - 1)).getUpdatedAt()));
-
-		content += "]}";
 		return content;
 	}
 }
